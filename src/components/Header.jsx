@@ -35,7 +35,7 @@ export default function Header() {
 
   return (
     <>
-      <nav className="mx-auto p-8 flex flex-col lg:flex-row items-center lg:justify-between relative w-full">
+      <nav className="mx-auto p-8 flex flex-col lg:flex-row items-center lg:justify-between relative w-full z-40">
         <div className="text-4xl font-bold font-dela tracking-wider">
           <h1>
             <Link to="/">TORNEGORS</Link>
