@@ -1,51 +1,30 @@
 import { useState } from 'react'
 import CardInfoTournament from '../components/CardInfoTournament'
 import TeamsTableBody from '../components/TeamsTableBody'
+import { torneoLiga } from '../components/info/TorneoLiga'
 
 export default function Liga() {
-  const torneoLiga = {
-    nombre: 'Formato Liga',
-    descripcion:
-      'En el formato de torneo tipo Liga, cada equipo compite contra los demás en varias jornadas, acumulando puntos a lo largo de la temporada.',
-    formato: {
-      estructura: 'round-robin',
-      detalles:
-        'Cada equipo juega al menos una vez contra cada rival, ya sea como local o visitante, en un número de jornadas determinado.',
-      puntos: {
-        victoria: 3,
-        empate: 1,
-        derrota: 0,
-      },
-      clasificacion:
-        'Los equipos se ordenan en la tabla según el total de puntos obtenidos.',
-    },
-    reglasDesempate: [
-      'Diferencia de goles',
-      'Goles a favor',
-      'Enfrentamientos directos',
-    ],
-    temporada: {
-      duracion: 'Personalizable',
-      inicio: 'Fecha inicial determinada por el organizador',
-      fin: 'Fecha final determinada por el organizador',
-    },
-    ganador:
-      'El equipo con más puntos al final del torneo es el campeón de la liga.',
-    opcionesPersonalizacion: [
-      'Cantidad de equipos',
-      'Cantidad de jornadas',
-      'Puntuación por partido',
-    ],
-  }
   const [inputValue, setInputValue] = useState('')
   const [teams, setTeams] = useState([])
   const [error, setError] = useState('')
+  const [isAddingTeamComplete, setIsAddingTeamComplete] = useState(false)
 
   const handleChangeInput = (e) => {
     setInputValue(e.target.value)
   }
+
   const handleAddTeam = (e) => {
     e.preventDefault()
+    if (isAddingTeamComplete) {
+      setError('No se pueden agregar más equipos')
+      return
+    }
+
+    if (teams.length >= 32) {
+      setError('El número máximo de equipos es 32.')
+      return
+    }
+
     if (
       inputValue.trim() &&
       !teams.some((team) => team.nombre === inputValue.trim())
@@ -62,15 +41,25 @@ export default function Liga() {
       setInputValue('')
       setError('')
     } else {
-      const mensajeError = 'El nombre del equipo debe ser único'
-      setError(mensajeError)
+      setError('El nombre del equipo debe ser único.')
     }
   }
-  // Metodo filter devolvera los parametros de la funcion.
-  //en este caso devuelve todos los elementos que no contengan el indice
+
   const handleEliminate = (index) => {
+    if (isAddingTeamComplete) {
+      return
+    }
     setTeams(teams.filter((_, i) => i !== index))
   }
+
+  const handleEndAddTeams = () => {
+    if (teams.length < 4) {
+      setError('Debe haber al menos 4 equipos para iniciar el torneo.')
+      return
+    }
+    setIsAddingTeamComplete(true)
+  }
+
   return (
     <main className="lg:max-w-4xl lg:w-full mx-auto px-4 flex flex-col gap-4">
       <CardInfoTournament
@@ -78,7 +67,7 @@ export default function Liga() {
         details={torneoLiga.formato.detalles}
         rules={torneoLiga.reglasDesempate.join(', ')}
       />
-      <form className="mt-10">
+      <form className={`mt-10 ${isAddingTeamComplete ? 'hidden' : ''}`}>
         <input
           type="text"
           placeholder="Ingresa un equipo"
@@ -90,7 +79,7 @@ export default function Liga() {
         <button onClick={handleAddTeam} className="px-3 py-1 bg-slate-600">
           +
         </button>
-        <span className="text-red-700 mx-4">{error}</span>
+        <span className="text-red-600 mx-4">{error}</span>
       </form>
 
       <div className="relative overflow-x-auto mb-8">
@@ -122,10 +111,16 @@ export default function Liga() {
                 team={team}
                 index={index}
                 handleEliminate={handleEliminate}
-              /> // Usar el nuevo componente aquí
+              />
             ))}
           </tbody>
         </table>
+        <button
+          className="btn px-3 py-1 bg-green-500 hover:bg-green-400 transition mt-4"
+          onClick={handleEndAddTeams}
+        >
+          ¡Estamos Listos!
+        </button>
       </div>
     </main>
   )

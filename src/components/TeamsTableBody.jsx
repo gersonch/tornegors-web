@@ -27,9 +27,7 @@ export default function TeamsTableBody({ team, index, handleEliminate }) {
         {team.nombre}
       </th>
       <td className="px-6 py-4">{team.puntos}</td>
-      <td className="px-6 py-4">
-        {team.difGolesIsPositive ? '+' : '-'} {team.difGoles}
-      </td>
+      <td className="px-6 py-4">{team.difGoles}</td>
       <td className="px-6 py-4">{team.golesAFavor}</td>
       <td className="px-6 py-4">{team.golesEnContra}</td>
       <td>

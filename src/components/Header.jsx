@@ -10,7 +10,7 @@ export default function Header() {
   const handleBarsBtn = () => {
     setIsActive((prevState) => !prevState)
   }
-  const navBarStyle = `text-xl font-semibold font-sans lg:flex items-center  ${isActive ? 'flex flex-col transition-all duration-300' : 'max-h-0 opacity-0 pointer-events-none lg:opacity-100 lg:pointer-events-auto'}`
+  const navBarStyle = `text-lg font-semibold font-sans lg:flex items-center  ${isActive ? 'flex flex-col transition-all duration-300' : 'max-h-0 opacity-0 pointer-events-none lg:opacity-100 lg:pointer-events-auto'}`
   const ulStyle = `${isActive ? 'absolute left-1/2 transform -translate-x-1/2 justify-center text-center bg-slate-900/90 rounded-3xl w-96 h-auto py-20' : 'flex flex-row gap-x-6 items-center'}`
 
   useEffect(() => {

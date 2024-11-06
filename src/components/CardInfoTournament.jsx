@@ -12,7 +12,7 @@ CardInfoTournament.propTypes = {
 }
 
 export default function CardInfoTournament({ description, details, rules }) {
-  const [isVisible, setIsVisible] = useState(true)
+  const [isVisible, setIsVisible] = useState(false)
 
   const handleCloseInfo = () => {
     setIsVisible(false)
