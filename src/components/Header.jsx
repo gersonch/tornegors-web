@@ -52,7 +52,10 @@ export default function Header() {
               </Link>
             </li>
             <li className="mb-8 lg:mb-0">
-              <Link to="/crear-torneo" className="py-2 px-4 lg:flex lg:gap-1">
+              <Link
+                to="/mis-torneos/play"
+                className="py-2 px-4 lg:flex lg:gap-1"
+              >
                 <span className="hidden lg:flex lg:items-center">
                   <CupTorneoIcon />
                 </span>
