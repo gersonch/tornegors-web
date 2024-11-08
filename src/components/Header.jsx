@@ -60,7 +60,6 @@ export default function Header() {
                   <CupTorneoIcon />
                 </span>
                 Crear Torneo
-                <Link to="/crear-torneo" />
               </Link>
             </li>
             <li className="mb-8 lg:mb-0">
