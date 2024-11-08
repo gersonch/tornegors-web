@@ -1,7 +1,11 @@
+import { Link } from 'react-router-dom'
+
 export default function Home() {
   return (
     <>
-      <section></section>
+      <section>
+        <Link to="/mis-torneos/play" />
+      </section>
     </>
   )
 }
