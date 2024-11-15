@@ -1,4 +1,5 @@
-:root {
+:root,
+.modal {
   background: #0f2027; /* fallback for old browsers */
   background: -webkit-linear-gradient(
     to right,

@@ -1,6 +1,9 @@
 import { PlusIcon } from '../assets/icons/PlusIcon'
 import CardsProfile from '../components/CardsProfile'
 import tournaments from '../components/info/torneosProfile'
+import Liga from './Liga'
+import { useState } from 'react'
+import CloseIcon from '../assets/icons/CloseIcon'
 
 export default function Profile() {
   // Función para obtener la clase de badge según el estado
@@ -16,9 +19,15 @@ export default function Profile() {
         return 'bg-blue-200 text-blue-700'
     }
   }
+  const [isVisible, setIsVisible] = useState(false)
+
+  // Función para alternar la visibilidad
+  const handletoggle = () => {
+    setIsVisible((prev) => !prev)
+  }
 
   return (
-    <section className="px-4 py-8">
+    <section className="px-4 py-8 relative">
       <div>
         {tournaments.length === 0 ? (
           <p className="text-center text-xl text-white/85">
@@ -48,12 +57,34 @@ export default function Profile() {
         )}
       </div>
       <div className="flex justify-center mt-4">
-        <button
-          type="button"
-          className="text-white bg-gray-800 hover:bg-gray-700 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2 transition gap-2"
-        >
-          <PlusIcon /> <span>Crear Torneo</span>
-        </button>
+        <div>
+          <button
+            type="button"
+            className="text-white bg-gray-800 hover:bg-gray-700 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2 transition gap-2"
+            onClick={handletoggle}
+          >
+            <PlusIcon /> <span>Crear Torneo</span>
+          </button>
+
+          {/* Mostrar el div que contiene el componente Liga si isVisible es true */}
+          {isVisible && (
+            <div className="fixed inset-0 flex items-center justify-center z-50">
+              {/* Fondo oscuro con opacidad */}
+              <div className="absolute inset-0 bg-black/50" />
+
+              {/* Contenedor con el componente Liga */}
+              <div className="relative p-6 rounded-lg shadow-lg max-w-5xl w-full max-h-5xl h-full z-10 my-10 ">
+                <button
+                  onClick={handletoggle}
+                  className="flex justify-end w-full cursor-pointer "
+                >
+                  <CloseIcon />
+                </button>
+                <Liga />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </section>
   )

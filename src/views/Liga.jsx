@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import CardInfoTournament from '../components/CardInfoTournament'
+
 import TeamsTableBody from '../components/TeamsTableBody'
-import { torneoLiga } from '../components/info/TorneoLiga'
 
 export default function Liga() {
   const [inputValue, setInputValue] = useState('')
@@ -61,13 +60,13 @@ export default function Liga() {
   }
 
   return (
-    <main className="lg:max-w-4xl lg:w-full mx-auto px-4 flex flex-col gap-4">
-      <CardInfoTournament
+    <main className="lg:max-w-4xl lg:w-full mx-auto px-8 py-4 flex flex-col gap-4 rounded-md modal">
+      {/* <CardInfoTournament
         description={torneoLiga.descripcion}
         details={torneoLiga.formato.detalles}
         rules={torneoLiga.reglasDesempate.join(', ')}
-      />
-      <form className={`mt-10 ${isAddingTeamComplete ? 'hidden' : ''}`}>
+      /> */}
+      <form className={`mt-10`}>
         <input
           type="text"
           placeholder="Ingresa un equipo"
