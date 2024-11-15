@@ -7,6 +7,7 @@ import Login from './views/Login'
 import SignUp from './views/SignUp'
 import Liga from './views/Liga'
 import Boards from './views/Boards'
+import Profile from './views/Profile'
 import { UserContext } from './context/UserContext'
 
 import PlayLiga from './views/PlayLiga'
@@ -22,12 +23,13 @@ function App() {
           <Route path="/liga" element={<Liga />} />
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/boards" element={<Boards />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route
-            path="/signup"
-            element={token ? <SignUp /> : <Navigate to="/login" />}
+            path="/boards"
+            element={token ? <Boards /> : <Navigate to="/login" />}
           />
-          <Route path="mis-torneos/play" element={<PlayLiga />} />
+          <Route path="/profile/mis-torneos/play" element={<PlayLiga />} />
+          <Route path="profile" element={<Profile />} />
         </Routes>
         <Footer />
       </main>

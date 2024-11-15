@@ -1,23 +1,35 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { UserContext } from '../context/UserContext'
-import { useContext, useEffect, useState } from 'react'
+//import { UserContext } from '../context/UserContext'
+import { useState } from 'react'
 
 export default function Login() {
-  const { login, token } = useContext(UserContext)
+  const user = {
+    email: 'hola@email.com',
+    password: '123123',
+  }
+  //const { login, token } = useContext(UserContext)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
-  useEffect(() => {
-    if (token) {
-      alert('Has iniciado sesión')
-      navigate('/boards')
-    }
-  }, [navigate, token])
+  // useEffect(() => {
+  //   if (token) {
+  //     alert('Has iniciado sesión')
+  //     navigate('/boards')
+  //   }
+  // }, [navigate, token])
 
   function handleSubmit(e) {
     e.preventDefault()
-    login(email, password)
+
+    if (user.email === email && user.password === password) {
+      alert('Has iniciado sesión correctamente')
+      navigate('/profile')
+    } else {
+      alert('Verifica tus datos')
+    }
+
+    //login(email, password)
   }
   return (
     <>
