@@ -20,15 +20,11 @@ function App() {
       <main className="max-w-full" id="main">
         <Header />
         <Routes>
-          <Route path="/liga" element={<Liga />} />
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route
-            path="/boards"
-            element={token ? <Boards /> : <Navigate to="/login" />}
-          />
-          <Route path="/profile/mis-torneos/play" element={<PlayLiga />} />
+          <Route path="/boards" />
+          <Route path="/profile/mis-torneos/play" element={<Liga />} />
           <Route path="profile" element={<Profile />} />
         </Routes>
         <Footer />
