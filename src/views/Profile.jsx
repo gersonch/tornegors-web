@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { PlusIcon } from '../assets/icons/PlusIcon'
 import CardsProfile from '../components/CardsProfile'
 import tournaments from '../components/info/torneosProfile'
@@ -5,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 
 export default function Profile() {
   const navigate = useNavigate()
+  const [showModal, setShowModal] = useState(false)
 
   // Función para obtener la clase de badge según el estado
   const getBadgeClass = (state) => {

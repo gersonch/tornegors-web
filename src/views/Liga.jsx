@@ -86,6 +86,7 @@ export default function LigaPlayLiga() {
   const handleStart = () => {
     const generatedFixture = generateFixture([...teams])
     setFixture(generatedFixture)
+    console.log(teams)
   }
 
   const handleScoreChange = (round, matchIndex, team, value) => {
