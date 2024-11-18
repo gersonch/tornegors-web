@@ -97,12 +97,12 @@ export default function Login() {
                       </label>
                     </div>
                   </div>
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
                   >
                     ¿Olvidaste tu contraseña?
-                  </a>
+                  </Link>
                 </div>
                 <button
                   type="submit"

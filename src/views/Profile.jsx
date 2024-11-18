@@ -1,11 +1,12 @@
+import { useState, useEffect } from 'react'
 import { PlusIcon } from '../assets/icons/PlusIcon'
 import CardsProfile from '../components/CardsProfile'
 import tournaments from '../components/info/torneosProfile'
-import Liga from './Liga'
-import { useState } from 'react'
-import CloseIcon from '../assets/icons/CloseIcon'
+import CreateBoard from './CreateBoard'
 
 export default function Profile() {
+  const [showModal, setShowModal] = useState(false)
+
   // Función para obtener la clase de badge según el estado
   const getBadgeClass = (state) => {
     switch (state) {
@@ -19,11 +20,23 @@ export default function Profile() {
         return 'bg-blue-200 text-blue-700'
     }
   }
-  const [isVisible, setIsVisible] = useState(false)
+  // Usamos useEffect para realizar una acción cuando el estado showModal cambie
+  useEffect(() => {
+    if (showModal) {
+      // Acción cuando el modal se muestra
+      console.log('Modal mostrado')
+    } else {
+      // Acción cuando el modal se oculta
+      console.log('Modal cerrado')
+    }
+  }, [showModal])
+  // Redirigir a la página de crear torneo
+  const handleRedirectLiga = () => {
+    setShowModal(true)
+  }
 
-  // Función para alternar la visibilidad
-  const handletoggle = () => {
-    setIsVisible((prev) => !prev)
+  const handleCloseModal = () => {
+    setShowModal(false)
   }
 
   return (
@@ -47,7 +60,7 @@ export default function Profile() {
                       title={torneo.title}
                       description={torneo.description}
                       state={torneo.state}
-                      style={`${getBadgeClass(torneo.state)} text-center`} // Aplicar clase dinámica para badge
+                      style={`${getBadgeClass(torneo.state)} text-center`}
                     />
                   </div>
                 </li>
@@ -57,34 +70,20 @@ export default function Profile() {
         )}
       </div>
       <div className="flex justify-center mt-4">
-        <div>
-          <button
-            type="button"
-            className="text-white bg-gray-800 hover:bg-gray-700 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2 transition gap-2"
-            onClick={handletoggle}
-          >
-            <PlusIcon /> <span>Crear Torneo</span>
-          </button>
-
-          {/* Mostrar el div que contiene el componente Liga si isVisible es true */}
-          {isVisible && (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-              {/* Fondo oscuro con opacidad */}
-              <div className="absolute inset-0 bg-black/50" />
-
-              {/* Contenedor con el componente Liga */}
-              <div className="relative p-6 rounded-lg shadow-lg max-w-5xl w-full max-h-5xl h-full z-10 my-10 ">
-                <button
-                  onClick={handletoggle}
-                  className="flex justify-end w-full cursor-pointer "
-                >
-                  <CloseIcon />
-                </button>
-                <Liga />
-              </div>
-            </div>
-          )}
-        </div>
+        <button
+          type="button"
+          className="text-white bg-gray-800 hover:bg-gray-700 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center gap-2 transition"
+          onClick={handleRedirectLiga}
+        >
+          <PlusIcon /> <span>Crear Torneo</span>
+        </button>
+      </div>
+      <div>
+        {showModal && (
+          <div className="relative">
+            <CreateBoard handleClose={handleCloseModal} />
+          </div>
+        )}
       </div>
     </section>
   )
