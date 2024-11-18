@@ -6,7 +6,7 @@ import { UserContext } from '../context/UserContext'
 
 export default function Header() {
   const [isActive, setIsActive] = useState(false)
-  const { token, userData } = useContext(UserContext)
+  const { token, logout } = useContext(UserContext)
 
   const handleBarsBtn = () => {
     setIsActive((prevState) => !prevState)
@@ -74,8 +74,9 @@ export default function Header() {
               <Link
                 to="/profile"
                 className="bg-blue-950 hover:bg-blue-800 transition-all py-2 px-4 rounded-full"
+                onClick={() => logout()}
               >
-                Hola, {userData.firstname}
+                Cerrar Sesión
               </Link>
             ) : (
               <Link

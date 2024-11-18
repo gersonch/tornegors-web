@@ -1,11 +1,41 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { PlusIcon } from '../assets/icons/PlusIcon'
 import CardsProfile from '../components/CardsProfile'
 import tournaments from '../components/info/torneosProfile'
 import CreateBoard from './CreateBoard'
+import { UserContext } from '../context/UserContext'
 
 export default function Profile() {
   const [showModal, setShowModal] = useState(false)
+  const [userData, setUserData] = useState(null)
+  const { token } = useContext(UserContext)
+  const URL = 'http://localhost:3000/api/user'
+
+  useEffect(() => {
+    if (token) {
+      const getUserById = async (token) => {
+        try {
+          const response = await fetch(`${URL}/me`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            credentials: 'include',
+          })
+          const data = await response.json()
+          if (data) {
+            setUserData(data)
+          } else {
+            console.error('no se pudo obtener el usuario')
+          }
+        } catch (err) {
+          console.error('Error al obtener el usuario:', err)
+        }
+      }
+      getUserById(token)
+    }
+  }, [token])
 
   // Función para obtener la clase de badge según el estado
   const getBadgeClass = (state) => {
@@ -41,6 +71,7 @@ export default function Profile() {
 
   return (
     <section className="px-4 py-8 relative">
+      {<p>Hola, {userData ? userData.firstname : 'Cargando...'}</p>}
       <div>
         {tournaments.length === 0 ? (
           <p className="text-center text-xl text-white/85">

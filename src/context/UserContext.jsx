@@ -1,41 +1,13 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react/prop-types */
-import { createContext, useEffect, useState } from 'react'
+import { createContext, useState } from 'react'
 
 export const UserContext = createContext()
 
 const UserProvider = ({ children }) => {
-  const URL = 'http://localhost:3000/api/user'
-  const [token, setToken] = useState('')
-  const [userData, setUserData] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [token, setToken] = useState(localStorage.getItem('token') || '')
 
-  useEffect(() => {
-    const getUserById = async (token) => {
-      setIsLoading(true)
-      try {
-        const response = await fetch(`${URL}/me`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          credentials: 'include',
-        })
-        const data = await response.json()
-        if (data) {
-          setUserData(data)
-        } else {
-          console.error('no se pudo obtener el usuario')
-        }
-      } catch (err) {
-        console.error('Error al obtener el usuario:', err)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-    getUserById()
-  }, [token])
+  const [isLoading, setIsLoading] = useState(false)
 
   const login = async (email, password) => {
     setIsLoading(true)
@@ -52,7 +24,7 @@ const UserProvider = ({ children }) => {
       if (data.token) {
         document.cookie = `token=${data.token}; path=/; max-age=86400; samesite=strict`
         setToken(data.token)
-
+        localStorage.setItem('token', data.token) // Guardar el token en localStorage
         console.log(data)
       } else {
         console.error('token no encontrado', data)
@@ -80,7 +52,6 @@ const UserProvider = ({ children }) => {
         }),
       })
       const data = await response.json()
-
       if (response.ok) {
         console.log('registro exitoso', data)
       } else {
@@ -90,17 +61,20 @@ const UserProvider = ({ children }) => {
       console.error('Error en el registro', err)
     }
   }
+
   const logout = () => {
     setToken(null)
+
+    localStorage.removeItem('token')
+    localStorage.removeItem('userData')
     document.cookie = 'token=; path=/; max-age=0; secure; sameSite=strict'
   }
 
   return (
-    <UserContext.Provider
-      value={{ token, login, logout, signup, isLoading, userData }}
-    >
+    <UserContext.Provider value={{ token, login, logout, signup, isLoading }}>
       {children}
     </UserContext.Provider>
   )
 }
+
 export default UserProvider
