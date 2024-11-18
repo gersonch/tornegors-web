@@ -153,8 +153,8 @@ export default function LigaPlayLiga() {
   }
 
   return (
-    <main className="lg:max-w-4xl mx-auto px-8 py-4 bg-[#1e1e2e] text-[#e0e0e0] min-h-screen">
-      <form>
+    <main className="">
+      <form className="max-w-5xl mx-auto mb-4">
         <input
           type="text"
           placeholder="Ingresa un equipo"
@@ -170,105 +170,128 @@ export default function LigaPlayLiga() {
         </button>
         <span className="text-[#ff6e6e] ml-4">{error}</span>
       </form>
-      <table className="mt-4 w-full border-collapse">
-        <thead>
-          <tr>
-            <th className="border-b-2 border-[#4e4e6e]">Equipo</th>
-            <th className="border-b-2 border-[#4e4e6e]">Pts.</th>
-            <th className="border-b-2 border-[#4e4e6e]">Dg.</th>
-            <th className="border-b-2 border-[#4e4e6e]">Gf.</th>
-            <th className="border-b-2 border-[#4e4e6e]">Gc.</th>
-            <th className="border-b-2 border-[#4e4e6e]">Eliminar</th>
-          </tr>
-        </thead>
-        <tbody>
-          {teams.map((team, index) => (
-            <tr key={index}>
-              <td className="border-b border-[#4e4e6e]">{team.nombre}</td>
-              <td className="border-b border-[#4e4e6e]">{team.puntos}</td>
-              <td className="border-b border-[#4e4e6e]">{team.difGoles}</td>
-              <td className="border-b border-[#4e4e6e]">{team.golesAFavor}</td>
-              <td className="border-b border-[#4e4e6e]">
-                {team.golesEnContra}
-              </td>
-              <td className="border-b border-[#4e4e6e]">
-                {!isAddingTeamComplete && (
-                  <button
-                    onClick={() => handleEliminate(index)}
-                    className="text-[#ff6e6e] hover:text-[#ff4e4e]"
-                  >
-                    Eliminar
-                  </button>
-                )}
-              </td>
+      <div className="relative overflow-x-auto">
+        <table className="w-full text-sm max-w-5xl mx-auto text-left rtl:text-right  text-gray-400">
+          <thead className="text-xs  uppercase  bg-gray-700 text-gray-400">
+            <tr>
+              <th scope="col" className="px-6 py-3">
+                Equipo
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Pts.
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Dg.
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Gf.
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Gc.
+              </th>
+              {!isAddingTeamComplete && (
+                <th scope="col" className="px-6 py-3">
+                  Eliminar
+                </th>
+              )}
             </tr>
-          ))}
-        </tbody>
-      </table>
-      {!isAddingTeamComplete && (
-        <button
-          onClick={handleEndAddTeams}
-          className="mt-4 bg-[#6e6e8e] px-3 py-1 text-[#ffffff] rounded-lg hover:bg-[#8e8eae]"
-        >
-          ¡Estamos Listos!
-        </button>
-      )}
-      {isAddingTeamComplete && (
-        <>
-          <button
-            onClick={handleStart}
-            className="mt-4 bg-[#5e5e7e] px-3 py-1 text-[#ffffff] rounded-lg hover:bg-[#7e7e9e]"
-          >
-            Generar Fixture
-          </button>
-          <button
-            onClick={updateTableWithScores}
-            className="ml-2 bg-[#4e4e6e] px-3 py-1 text-[#ffffff] rounded-lg hover:bg-[#6e6e8e]"
-          >
-            Actualizar Tabla
-          </button>
-        </>
-      )}
-      <div>
-        {fixture.map((round, roundIndex) => (
-          <div key={roundIndex} className="mt-6">
-            <h3 className="text-[#e2e2e2]">Jornada {roundIndex + 1}</h3>
-            {round.map((match, matchIndex) => (
-              <div
-                key={matchIndex}
-                className="flex items-center justify-between my-2"
-              >
-                <span>{match.local.nombre}</span>
-                <input
-                  type="number"
-                  onChange={(e) =>
-                    handleScoreChange(
-                      roundIndex,
-                      matchIndex,
-                      'local',
-                      e.target.value
-                    )
-                  }
-                  className="border bg-[#3e3e4e] text-[#ffffff] px-2 py-1 w-12 rounded-lg"
-                />
-                <span>-</span>
-                <input
-                  type="number"
-                  onChange={(e) =>
-                    handleScoreChange(
-                      roundIndex,
-                      matchIndex,
-                      'visite',
-                      e.target.value
-                    )
-                  }
-                  className="border bg-[#3e3e4e] text-[#ffffff] px-2 py-1 w-12 rounded-lg"
-                />
-                <span>{match.visite.nombre}</span>
-              </div>
+          </thead>
+          <tbody>
+            {teams.map((team, index) => (
+              <tr key={index} className=" border-b bg-gray-800 border-gray-700">
+                <td className="px-6 py-4">{team.nombre}</td>
+                <td className="px-6 py-4">{team.puntos}</td>
+                <td className="px-6 py-4">{team.difGoles}</td>
+                <td className="px-6 py-4">{team.golesAFavor}</td>
+                <td className="px-6 py-4">{team.golesEnContra}</td>
+
+                {!isAddingTeamComplete && (
+                  <td className="px-6 py-4">
+                    <button
+                      onClick={() => handleEliminate(index)}
+                      className="text-[#ff6e6e] hover:text-[#ff4e4e]"
+                    >
+                      Eliminar
+                    </button>
+                  </td>
+                )}
+              </tr>
             ))}
-          </div>
-        ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="max-w-5xl mx-auto">
+        {!isAddingTeamComplete && (
+          <button
+            onClick={handleEndAddTeams}
+            className="mt-4 bg-[#6e6e8e] px-3 py-1 text-[#ffffff] rounded-lg hover:bg-[#8e8eae]"
+          >
+            ¡Estamos Listos!
+          </button>
+        )}
+        {isAddingTeamComplete && (
+          <>
+            <button
+              onClick={handleStart}
+              className="mt-4 bg-[#5e5e7e] px-3 py-1 text-[#ffffff] rounded-lg hover:bg-[#7e7e9e]"
+            >
+              Generar Fixture
+            </button>
+            <button
+              onClick={updateTableWithScores}
+              className="ml-2 bg-[#4e4e6e] px-3 py-1 text-[#ffffff] rounded-lg hover:bg-[#6e6e8e]"
+            >
+              Actualizar Tabla
+            </button>
+          </>
+        )}
+        <div className=" mt-4 ">
+          {fixture.map((round, roundIndex) => (
+            <div key={roundIndex} className="mt-6 bg-slate-700 p-2 rounded-md">
+              <h3 className="text-[#e2e2e2] mb-4">Jornada {roundIndex + 1}</h3>
+              {round.map((match, matchIndex) => (
+                <div
+                  key={matchIndex}
+                  className="flex items-center justify-between my-3  p-3 rounded-lg "
+                >
+                  <span className="text-[#ffffff] flex-1 text-center">
+                    {match.local.nombre}
+                  </span>
+                  <div className="flex items-center space-x-2 flex-1 justify-center">
+                    <input
+                      type="number"
+                      onChange={(e) =>
+                        handleScoreChange(
+                          roundIndex,
+                          matchIndex,
+                          'local',
+                          e.target.value
+                        )
+                      }
+                      className="border bg-[#3e3e4e] text-[#ffffff] px-2 py-1 w-12 rounded-lg"
+                    />
+                    <span className="text-[#ffffff]">-</span>
+                    <input
+                      type="number"
+                      onChange={(e) =>
+                        handleScoreChange(
+                          roundIndex,
+                          matchIndex,
+                          'visite',
+                          e.target.value
+                        )
+                      }
+                      className="border bg-[#3e3e4e] text-[#ffffff] px-2 py-1 w-12 rounded-lg text-center"
+                    />
+                  </div>
+                  <span className="text-[#ffffff] flex-1 text-center">
+                    {match.visite.nombre}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
     </main>
   )

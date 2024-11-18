@@ -1,11 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { PlusIcon } from '../assets/icons/PlusIcon'
 import CardsProfile from '../components/CardsProfile'
 import tournaments from '../components/info/torneosProfile'
-import { useNavigate } from 'react-router-dom'
+import CreateBoard from './CreateBoard'
 
 export default function Profile() {
-  const navigate = useNavigate()
   const [showModal, setShowModal] = useState(false)
 
   // Función para obtener la clase de badge según el estado
@@ -21,10 +20,23 @@ export default function Profile() {
         return 'bg-blue-200 text-blue-700'
     }
   }
-
+  // Usamos useEffect para realizar una acción cuando el estado showModal cambie
+  useEffect(() => {
+    if (showModal) {
+      // Acción cuando el modal se muestra
+      console.log('Modal mostrado')
+    } else {
+      // Acción cuando el modal se oculta
+      console.log('Modal cerrado')
+    }
+  }, [showModal])
   // Redirigir a la página de crear torneo
   const handleRedirectLiga = () => {
-    navigate('/profile/mis-torneos/play')
+    setShowModal(true)
+  }
+
+  const handleCloseModal = () => {
+    setShowModal(false)
   }
 
   return (
@@ -65,6 +77,13 @@ export default function Profile() {
         >
           <PlusIcon /> <span>Crear Torneo</span>
         </button>
+      </div>
+      <div>
+        {showModal && (
+          <div className="relative">
+            <CreateBoard handleClose={handleCloseModal} />
+          </div>
+        )}
       </div>
     </section>
   )
