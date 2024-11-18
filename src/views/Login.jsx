@@ -1,35 +1,23 @@
 import { Link, useNavigate } from 'react-router-dom'
-//import { UserContext } from '../context/UserContext'
-import { useState } from 'react'
+import { UserContext } from '../context/UserContext'
+import { useState, useEffect, useContext } from 'react'
 
 export default function Login() {
-  const user = {
-    email: 'hola@email.com',
-    password: '123123',
-  }
-  //const { login, token } = useContext(UserContext)
+  const { login, token, isLoading } = useContext(UserContext)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
-  // useEffect(() => {
-  //   if (token) {
-  //     alert('Has iniciado sesión')
-  //     navigate('/boards')
-  //   }
-  // }, [navigate, token])
+  useEffect(() => {
+    if (token) {
+      navigate('/profile')
+    }
+  }, [navigate, token])
 
   function handleSubmit(e) {
     e.preventDefault()
 
-    if (user.email === email && user.password === password) {
-      alert('Has iniciado sesión correctamente')
-      navigate('/profile')
-    } else {
-      alert('Verifica tus datos')
-    }
-
-    //login(email, password)
+    login(email, password)
   }
   return (
     <>
@@ -106,9 +94,33 @@ export default function Login() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full text-white focus:ring-primary-300 font-medium rounded-lgs text-sm px-5 py-2.5 text-center bg-blue-900 rounded-2xl"
+                  className="px-4 py-2 bg-blue-600 text-gray-100 rounded-lg hover:bg-blue-700 flex items-center"
+                  disabled={isLoading} // Deshabilitar si está cargando
                 >
-                  Iniciar sesión
+                  {isLoading ? (
+                    <svg
+                      className="animate-spin h-5 w-5 text-white mr-2"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                      ></path>
+                    </svg>
+                  ) : (
+                    'Iniciar sesión'
+                  )}
                 </button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   ¿No tienes una cuenta aun?{' '}

@@ -247,7 +247,10 @@ export default function LigaPlayLiga() {
         )}
         <div className=" mt-4 ">
           {fixture.map((round, roundIndex) => (
-            <div key={roundIndex} className="mt-6 bg-slate-700 p-2 rounded-md">
+            <div
+              key={roundIndex}
+              className="mt-6 bg-slate-700 py-4 px-6 rounded-md"
+            >
               <h3 className="text-[#e2e2e2] mb-4">Jornada {roundIndex + 1}</h3>
               {round.map((match, matchIndex) => (
                 <div

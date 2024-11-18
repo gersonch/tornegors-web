@@ -31,7 +31,7 @@ export default function Profile() {
     }
   }, [showModal])
   // Redirigir a la página de crear torneo
-  const handleRedirectLiga = () => {
+  const handleShowModal = () => {
     setShowModal(true)
   }
 
@@ -73,7 +73,7 @@ export default function Profile() {
         <button
           type="button"
           className="text-white bg-gray-800 hover:bg-gray-700 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center gap-2 transition"
-          onClick={handleRedirectLiga}
+          onClick={handleShowModal}
         >
           <PlusIcon /> <span>Crear Torneo</span>
         </button>

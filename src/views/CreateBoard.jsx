@@ -6,20 +6,36 @@ import CloseIcon from '../assets/icons/CloseIcon'
 export default function CreateBoard({ handleClose }) {
   const [boardTitle, setBoardTitle] = useState('')
   const [description, setDescription] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
   // Función para manejar la creación del tablero
-  const handleCreateBoard = (e) => {
+  const handleCreateBoard = async (e) => {
     e.preventDefault()
-    console.log('Título del tablero:', boardTitle)
-    console.log('Descripción:', description)
-
-    // Limpiar campos
-    setBoardTitle('')
-    setDescription('')
-
-    // Opcional: Redirigir después de crear el tablero
-    navigate('/profile/mis-torneos/play')
+    setIsLoading(true)
+    try {
+      const response = await fetch(
+        'http://localhost:3000/api/tournament/create',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            title: boardTitle,
+            description: description,
+          }),
+        }
+      )
+      if (!response.ok) {
+        throw new Error('Error al crear el torneo')
+      }
+      navigate('/profile/mis-torneos/play')
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -66,9 +82,33 @@ export default function CreateBoard({ handleClose }) {
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-blue-600 text-gray-100 rounded-lg hover:bg-blue-700"
+                className="px-4 py-2 bg-blue-600 text-gray-100 rounded-lg hover:bg-blue-700 flex items-center"
+                disabled={isLoading} // Deshabilitar si está cargando
               >
-                Crear
+                {isLoading ? (
+                  <svg
+                    className="animate-spin h-5 w-5 text-white mr-2"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                    ></path>
+                  </svg>
+                ) : (
+                  'Crear'
+                )}
               </button>
             </div>
           </form>
