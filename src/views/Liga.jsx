@@ -154,22 +154,25 @@ export default function LigaPlayLiga() {
 
   return (
     <main className="">
-      <form className="max-w-5xl mx-auto mb-4">
-        <input
-          type="text"
-          placeholder="Ingresa un equipo"
-          onChange={handleChangeInput}
-          value={inputValue}
-          className="border bg-[#2e2e3e] text-[#ffffff] px-2 py-1 rounded-lg"
-        />
-        <button
-          onClick={handleAddTeam}
-          className="ml-2 px-3 py-1 bg-[#4e4e6e] text-[#ffffff] hover:bg-[#6e6e8e] rounded-lg"
-        >
-          Agregar equipo
-        </button>
-        <span className="text-[#ff6e6e] ml-4">{error}</span>
-      </form>
+      {!isAddingTeamComplete && (
+        <form className="max-w-5xl mx-auto mb-4">
+          <input
+            type="text"
+            placeholder="Ingresa un equipo"
+            onChange={handleChangeInput}
+            value={inputValue}
+            className="border bg-[#2e2e3e] text-[#ffffff] px-2 py-1 rounded-lg"
+          />
+          <button
+            onClick={handleAddTeam}
+            className="ml-2 px-3 py-1 bg-[#4e4e6e] text-[#ffffff] hover:bg-[#6e6e8e] rounded-lg"
+          >
+            Agregar equipo
+          </button>
+          <span className="text-[#ff6e6e] ml-4">{error}</span>
+        </form>
+      )}
+
       <div className="relative overflow-x-auto">
         <table className="w-full text-sm max-w-5xl mx-auto text-left rtl:text-right  text-gray-400">
           <thead className="text-xs  uppercase  bg-gray-700 text-gray-400">
@@ -197,26 +200,36 @@ export default function LigaPlayLiga() {
             </tr>
           </thead>
           <tbody>
-            {teams.map((team, index) => (
-              <tr key={index} className=" border-b bg-gray-800 border-gray-700">
-                <td className="px-6 py-4">{team.nombre}</td>
-                <td className="px-6 py-4">{team.puntos}</td>
-                <td className="px-6 py-4">{team.difGoles}</td>
-                <td className="px-6 py-4">{team.golesAFavor}</td>
-                <td className="px-6 py-4">{team.golesEnContra}</td>
-
-                {!isAddingTeamComplete && (
-                  <td className="px-6 py-4">
-                    <button
-                      onClick={() => handleEliminate(index)}
-                      className="text-[#ff6e6e] hover:text-[#ff4e4e]"
-                    >
-                      Eliminar
-                    </button>
-                  </td>
-                )}
-              </tr>
-            ))}
+            {teams
+              .slice() // Creamos una copia para no mutar el estado original
+              .sort((a, b) => {
+                if (b.puntos === a.puntos) {
+                  return b.difGoles - a.difGoles // Ordenar por diferencia de goles si los puntos son iguales
+                }
+                return b.puntos - a.puntos // Ordenar por puntos
+              })
+              .map((team, index) => (
+                <tr
+                  key={index}
+                  className="border-b bg-gray-800 border-gray-700"
+                >
+                  <td className="px-6 py-4">{team.nombre}</td>
+                  <td className="px-6 py-4">{team.puntos}</td>
+                  <td className="px-6 py-4">{team.difGoles}</td>
+                  <td className="px-6 py-4">{team.golesAFavor}</td>
+                  <td className="px-6 py-4">{team.golesEnContra}</td>
+                  {!isAddingTeamComplete && (
+                    <td className="px-6 py-4">
+                      <button
+                        onClick={() => handleEliminate(index)}
+                        className="text-[#ff6e6e] hover:text-[#ff4e4e]"
+                      >
+                        Eliminar
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

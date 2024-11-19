@@ -1,11 +1,13 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
 import { useState, useEffect, useContext } from 'react'
+import { Spinner } from '../components/Spinner'
 
 export default function Login() {
   const { login, token, isLoading } = useContext(UserContext)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [loginError, setLoginError] = useState('')
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -14,10 +16,14 @@ export default function Login() {
     }
   }, [navigate, token])
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
 
-    login(email, password)
+    await login(email, password)
+    if (!token) {
+      console.error('Inicio de sesión fallido')
+      setLoginError('¡Lo sentimos! Aún no tenemos activado este apartado.')
+    }
   }
   return (
     <>
@@ -42,7 +48,7 @@ export default function Login() {
                     id="email"
                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="juan@email.com"
-                    required=""
+                    required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   ></input>
@@ -60,7 +66,7 @@ export default function Login() {
                     id="password"
                     placeholder="••••••••"
                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required=""
+                    required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   ></input>
@@ -94,34 +100,16 @@ export default function Login() {
                 </div>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 text-gray-100 rounded-lg hover:bg-blue-700 flex items-center"
+                  className="px-4 py-2 bg-blue-600 text-gray-100 rounded-lg hover:bg-blue-700 flex items-center mb-2"
                   disabled={isLoading} // Deshabilitar si está cargando
                 >
-                  {isLoading ? (
-                    <svg
-                      className="animate-spin h-5 w-5 text-white mr-2"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                      ></path>
-                    </svg>
-                  ) : (
-                    'Iniciar sesión'
-                  )}
+                  {isLoading ? <Spinner /> : 'Iniciar sesión'}
                 </button>
+                {!token && (
+                  <span className="font-normal text-md text-red-600">
+                    {loginError}
+                  </span>
+                )}
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   ¿No tienes una cuenta aun?{' '}
                   <Link
