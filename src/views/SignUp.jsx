@@ -38,6 +38,9 @@ function SignUp() {
       if (result && result.message) {
         setMessage(result.message)
         setIsSuccess(result.success)
+        setTimeout(() => {
+          navigate('/login')
+        }, 2000)
       } else {
         setMessage('Ocurrió un error desconocido')
         setIsSuccess(false)
@@ -46,9 +49,6 @@ function SignUp() {
       console.error(err)
     } finally {
       setIsLoading(false)
-      setTimeout(() => {
-        navigate('/login')
-      }, 2000)
     }
   }
 
