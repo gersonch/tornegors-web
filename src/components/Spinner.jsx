@@ -1,4 +1,5 @@
-export function Spinner() {
+/* eslint-disable react/prop-types */
+export function Spinner({ children }) {
   return (
     <button disabled type="button" className="">
       <svg
@@ -18,7 +19,7 @@ export function Spinner() {
           fill="currentColor"
         />
       </svg>
-      Cargando...
+      {children}
     </button>
   )
 }

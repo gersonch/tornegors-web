@@ -62,12 +62,21 @@ export default function Header() {
             </Link>
           </li>
           <li className="mb-8 lg:mb-0">
-            <Link to="/mis-torneos/play" className="py-2 px-4 lg:flex lg:gap-1">
-              <span className="hidden lg:flex lg:items-center">
-                <CupTorneoIcon />
-              </span>
-              Crear Torneo
-            </Link>
+            {token ? (
+              <Link to="/profile" className="py-2 px-4 lg:flex lg:gap-1">
+                Mi Perfil
+              </Link>
+            ) : (
+              <Link
+                to="/mis-torneos/play"
+                className="py-2 px-4 lg:flex lg:gap-1"
+              >
+                <span className="hidden lg:flex lg:items-center">
+                  <CupTorneoIcon />
+                </span>
+                Crear Torneo
+              </Link>
+            )}
           </li>
           <li className="mb-8 lg:mb-0">
             {token ? (

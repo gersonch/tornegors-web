@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 CardsProfile.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  state: PropTypes.oneOf(['Activo', 'Finalizado', 'No iniciado']).isRequired,
+  state: PropTypes.string,
   style: PropTypes.string.isRequired, // Se asegura de que `className` siempre esté presente
 }
 

@@ -103,7 +103,11 @@ export default function Login() {
                   className="px-4 py-2 bg-blue-600 text-gray-100 rounded-lg hover:bg-blue-700 flex items-center mb-2"
                   disabled={isLoading} // Deshabilitar si está cargando
                 >
-                  {isLoading ? <Spinner /> : 'Iniciar sesión'}
+                  {isLoading ? (
+                    <Spinner>Iniciando Sesion...</Spinner>
+                  ) : (
+                    'Iniciar sesión'
+                  )}
                 </button>
                 {!token && (
                   <span className="font-normal text-md text-red-600">
