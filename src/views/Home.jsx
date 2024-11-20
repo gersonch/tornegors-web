@@ -19,10 +19,17 @@ export default function Home() {
           <div className="collapse-title text-xl font-medium text-red-500">
             ¡Ojo!
           </div>
-          <div className="collapse-content text-red-500">
+          <div className="collapse-content text-red-300">
             <p>
               Te recomendamos que inicies sesión para que se guarde tu torneo y
-              puedas acceder a el cuando quieras
+              puedas acceder a el cuando quieras. <br></br> <br></br>Lamentamos
+              los inconvenientes. Esta página aún se encuentra{' '}
+              <span className="font-bold text-red-400">en desarrollo</span>, por
+              lo que algunas funcionalidades todavía{' '}
+              <span className="font-bold text-red-400">
+                no están disponibles
+              </span>
+              . Agradecemos tu comprensión.
             </p>
           </div>
         </div>
