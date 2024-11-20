@@ -6,6 +6,7 @@ export const UserContext = createContext()
 
 const UserProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || '')
+  const [userData, setUserData] = useState('')
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -53,9 +54,13 @@ const UserProvider = ({ children }) => {
       })
       const data = await response.json()
       if (response.ok) {
-        console.log('registro exitoso', data)
+        setUserData(data)
+        return { success: true, message: 'Registro exitoso' }
       } else {
-        console.error('Error en el registro', data)
+        return {
+          success: false,
+          message: data.message || 'Error en el registro',
+        }
       }
     } catch (err) {
       console.error('Error en el registro', err)
@@ -71,7 +76,9 @@ const UserProvider = ({ children }) => {
   }
 
   return (
-    <UserContext.Provider value={{ token, login, logout, signup, isLoading }}>
+    <UserContext.Provider
+      value={{ token, login, logout, signup, isLoading, userData }}
+    >
       {children}
     </UserContext.Provider>
   )

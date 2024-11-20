@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
 
 import { useContext, useState } from 'react'
+import { Spinner } from '../components/Spinner'
 
 function SignUp() {
   const { signup } = useContext(UserContext)
@@ -11,20 +12,48 @@ function SignUp() {
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
   const [nationality, setNationality] = useState('')
-  function handleConfirmPassword(e) {
-    setConfirmPassword(e.target.value)
-  }
-
+  const [message, setMessage] = useState('')
+  const [isSuccess, setIsSuccess] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
   async function checkInfo(e) {
     e.preventDefault()
 
-    if (password === confirmPassword) {
-      console.log({ firstname, lastname, email, password, nationality })
-      await signup(firstname, lastname, email, password, nationality)
-      alert('Registro exitoso')
-    } else {
-      alert('Verifica tus datos')
+    try {
+      setIsLoading(true)
+      setMessage('') // Limpiar mensaje previo
+      if (password !== confirmPassword) {
+        setMessage('Las contraseñas no coinciden.')
+        setIsSuccess(false)
+        return
+      }
+
+      const result = await signup(
+        firstname,
+        lastname,
+        email,
+        password,
+        nationality
+      )
+      if (result && result.message) {
+        setMessage(result.message)
+        setIsSuccess(result.success)
+      } else {
+        setMessage('Ocurrió un error desconocido')
+        setIsSuccess(false)
+      }
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setIsLoading(false)
+      setTimeout(() => {
+        navigate('/login')
+      }, 2000)
     }
+  }
+
+  function handleConfirmPassword(e) {
+    setConfirmPassword(e.target.value)
   }
 
   return (
@@ -163,12 +192,26 @@ function SignUp() {
                   </Link>
                 </label>
               </div>
-              <button
-                type="submit"
-                className="w-full text-white bg-primary-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-800 transition"
-              >
-                Crea tu cuenta
-              </button>
+              {isLoading ? (
+                <button className="w-full text-white bg-primary-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-800 transition">
+                  <Spinner></Spinner>
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="w-full text-white bg-primary-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-800 transition"
+                >
+                  Crea tu cuenta
+                </button>
+              )}
+
+              {message && (
+                <p
+                  className={`message ${isSuccess ? 'text-green-500' : 'text-red-500'}`}
+                >
+                  {message}
+                </p>
+              )}
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 ¿Ya estás registrado?{' '}
                 <Link
