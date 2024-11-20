@@ -6,6 +6,7 @@ import CloseIcon from '../assets/icons/CloseIcon'
 export default function CreateBoard({ handleClose }) {
   const [boardTitle, setBoardTitle] = useState('')
   const [description, setDescription] = useState('')
+  const [type, setType] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
@@ -15,7 +16,7 @@ export default function CreateBoard({ handleClose }) {
     setIsLoading(true)
     try {
       const response = await fetch(
-        'http://localhost:3000/api/tournament/create',
+        'http://localhost:3000/api/tournament/create-tournament',
         {
           method: 'POST',
           headers: {
@@ -24,13 +25,19 @@ export default function CreateBoard({ handleClose }) {
           body: JSON.stringify({
             title: boardTitle,
             description: description,
+            type: type,
           }),
+          credentials: 'include',
         }
       )
+
       if (!response.ok) {
+        const errorData = await response.json() // Obtiene el cuerpo de la respuesta de error
+        console.error('Error:', errorData) // Imprime el error recibido
         throw new Error('Error al crear el torneo')
       }
       navigate('/profile/mis-torneos/play')
+      console.log(type)
     } catch (err) {
       console.error(err)
     } finally {
@@ -72,6 +79,17 @@ export default function CreateBoard({ handleClose }) {
                 className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500 text-gray-100"
               />
             </label>
+            <select
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+              className="select select-bordered w-full max-w-xs"
+            >
+              <option value="" selected>
+                ¿Que tipo de torneo quieres crear?
+              </option>
+              <option value="liga">Liga</option>
+              <option value="playoff">Play-off</option>
+            </select>
             <div className="flex justify-end space-x-4">
               <button
                 type="button"
