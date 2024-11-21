@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom'
 CardsProfile.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  state: PropTypes.string,
+  type: PropTypes.string,
   style: PropTypes.string.isRequired, // Se asegura de que `className` siempre esté presente
 }
 
-function CardsProfile({ title, description, state, style }) {
+function CardsProfile({ title, description, type, style }) {
   return (
     <Link
       to="mis-torneos/play"
@@ -19,7 +19,7 @@ function CardsProfile({ title, description, state, style }) {
       <span
         className={`text-sm font-medium px-1 py-0.5 rounded max-w-28 flex-nowrap flex text-center justify-center ${style} `}
       >
-        {state}
+        {type}
       </span>
     </Link>
   )

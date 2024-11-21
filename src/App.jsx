@@ -12,6 +12,7 @@ import { UserContext } from './context/UserContext'
 
 //import PlayLiga from './views/PlayLiga'
 import { useContext } from 'react'
+import { TournamentProvider } from './context/TournamentContext'
 
 function App() {
   const { token } = useContext(UserContext)
@@ -19,17 +20,20 @@ function App() {
     <>
       <main className="max-w-full" id="main">
         <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/boards" />
-          <Route path="/profile/mis-torneos/play" element={<Liga />} />
-          <Route
-            path="/profile"
-            element={token ? <Profile /> : <Navigate to="/login" />}
-          />
-        </Routes>
+        <TournamentProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/boards" />
+            <Route path="/profile/mis-torneos/play" element={<Liga />} />
+
+            <Route
+              path="/profile"
+              element={token ? <Profile /> : <Navigate to="/login" />}
+            />
+          </Routes>
+        </TournamentProvider>
         <Footer />
       </main>
     </>

@@ -7,7 +7,7 @@ export const UserContext = createContext()
 const UserProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || '')
   const [userData, setUserData] = useState('')
-
+  const URL = 'http://localhost:3000/api/user'
   const [isLoading, setIsLoading] = useState(false)
 
   const login = async (email, password) => {
@@ -75,9 +75,34 @@ const UserProvider = ({ children }) => {
     document.cookie = 'token=; path=/; max-age=0; secure; sameSite=strict'
   }
 
+  const getUserById = async () => {
+    try {
+      setIsLoading(true)
+      const response = await fetch(`${URL}/me`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: 'include',
+      })
+      const data = await response.json()
+      await new Promise((resolve) => setTimeout(resolve, 500))
+      if (data) {
+        setUserData(data)
+      } else {
+        console.error('No se pudo obtener el usuario')
+      }
+    } catch (err) {
+      console.error('Error al obtener el usuario:', err)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <UserContext.Provider
-      value={{ token, login, logout, signup, isLoading, userData }}
+      value={{ token, login, logout, signup, isLoading, userData, getUserById }}
     >
       {children}
     </UserContext.Provider>

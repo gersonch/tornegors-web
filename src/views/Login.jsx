@@ -21,7 +21,6 @@ export default function Login() {
 
     await login(email, password)
     if (!token) {
-      console.error('Inicio de sesión fallido')
       setLoginError('¡Lo sentimos! Aún no tenemos activado este apartado.')
     }
   }

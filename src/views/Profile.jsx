@@ -1,60 +1,43 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useContext } from 'react'
 import { PlusIcon } from '../assets/icons/PlusIcon'
 import CardsProfile from '../components/CardsProfile'
-import tournaments from '../components/info/torneosProfile'
 import CreateBoard from './CreateBoard'
 import { UserContext } from '../context/UserContext'
 import { SkeletonCard } from '../components/SkeletonCard'
+import { TournamentContext } from '../context/TournamentContext'
 
 export default function Profile() {
   const [showModal, setShowModal] = useState(false)
-  const [userData, setUserData] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const { token } = useContext(UserContext)
-  const URL = 'http://localhost:3000/api/user'
-
-  useEffect(() => {
-    if (token) {
-      const getUserById = async () => {
-        try {
-          setIsLoading(true)
-          const response = await fetch(`${URL}/me`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-            credentials: 'include',
-          })
-          const data = await response.json()
-          await new Promise((resolve) => setTimeout(resolve, 500))
-          if (data) {
-            setUserData(data)
-          } else {
-            console.error('No se pudo obtener el usuario')
-          }
-        } catch (err) {
-          console.error('Error al obtener el usuario:', err)
-        } finally {
-          setIsLoading(false)
-        }
-      }
-      getUserById()
-    }
-  }, [token])
+  const {
+    token,
+    isLoading,
+    getUserById,
+    userData,
+    error: userError,
+  } = useContext(UserContext)
+  const {
+    getTournamentsByUser,
+    tournaments,
+    error: tournamentError,
+  } = useContext(TournamentContext)
 
   const getBadgeClass = (state) => {
     switch (state) {
-      case 'En curso':
+      case 'liga':
         return 'bg-green-200 text-green-700'
-      case 'Finalizado':
+      case 'playoff':
         return 'bg-gray-200 text-gray-700'
-      case 'No iniciado':
-        return 'bg-yellow-200 text-yellow-700'
       default:
         return 'bg-blue-200 text-blue-700'
     }
   }
+  useEffect(() => {
+    if (token) {
+      getTournamentsByUser()
+      getUserById()
+    }
+  }, [token])
 
   const handleShowModal = () => {
     setShowModal(true)
@@ -68,11 +51,16 @@ export default function Profile() {
     <section className="px-4 py-8 relative">
       {isLoading ? (
         <SkeletonCard />
+      ) : userError || tournamentError ? (
+        <div className="text-center text-red-600">
+          <p>Hubo un error al cargar los datos.</p>
+          <p>{userError || tournamentError}</p>
+        </div>
       ) : (
         <>
           <div className="max-w-5xl mx-auto">
             <p className="font-semibold text-xl mx-4">
-              Hola, {userData.firstname}
+              Hola, {userData?.firstname || 'Cargando...'}
             </p>
           </div>
           <div>
@@ -95,8 +83,8 @@ export default function Profile() {
                         <CardsProfile
                           title={torneo.title}
                           description={torneo.description}
-                          state={torneo.state}
-                          style={`${getBadgeClass(torneo.state)} text-center`}
+                          type={torneo.type}
+                          style={`${getBadgeClass(torneo.type)}`}
                         />
                       </div>
                     </li>
