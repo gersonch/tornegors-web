@@ -9,6 +9,7 @@ export const TournamentProvider = ({ children }) => {
   const [tournaments, setTournaments] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [tournament, setTournament] = useState({})
 
   const getTournamentsByUser = async () => {
     setIsLoading(true)
@@ -35,9 +36,40 @@ export const TournamentProvider = ({ children }) => {
     }
   }
 
+  const getTournamentById = async (id) => {
+    setIsLoading(true)
+    try {
+      const response = await fetch(`${URL}/get-tournament/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        credentials: 'include',
+      })
+      const data = await response.json()
+      if (response.ok) {
+        setTournament(data)
+      } else {
+        setError(data.message || 'Error al cargar el torneo')
+      }
+    } catch (err) {
+      setError('Hubo un error al obtener los torneos', err)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <TournamentContext.Provider
-      value={{ tournaments, isLoading, error, getTournamentsByUser }}
+      value={{
+        tournaments,
+        tournament,
+        isLoading,
+        error,
+        getTournamentsByUser,
+        getTournamentById,
+      }}
     >
       {children}
     </TournamentContext.Provider>

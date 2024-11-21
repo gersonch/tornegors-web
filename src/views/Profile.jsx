@@ -6,6 +6,8 @@ import CreateBoard from './CreateBoard'
 import { UserContext } from '../context/UserContext'
 import { SkeletonCard } from '../components/SkeletonCard'
 import { TournamentContext } from '../context/TournamentContext'
+import 'flag-icons/css/flag-icons.min.css'
+import { ShowFlagIcon } from '../assets/icons/FlagIcons'
 
 export default function Profile() {
   const [showModal, setShowModal] = useState(false)
@@ -49,6 +51,14 @@ export default function Profile() {
 
   return (
     <section className="px-4 py-8 relative">
+      <h2 className="text-3xl font-bold mb-6 text-center">Mis torneos</h2>
+      <div className="max-w-5xl mx-auto">
+        <p className="font-semibold text-xl mx-4">
+          Hola, {userData?.firstname || 'Cargando...'}
+          <i className={`${ShowFlagIcon(userData?.nationality)} ml-4`}></i>
+        </p>
+      </div>
+
       {isLoading ? (
         <SkeletonCard />
       ) : userError || tournamentError ? (
@@ -58,11 +68,6 @@ export default function Profile() {
         </div>
       ) : (
         <>
-          <div className="max-w-5xl mx-auto">
-            <p className="font-semibold text-xl mx-4">
-              Hola, {userData?.firstname || 'Cargando...'}
-            </p>
-          </div>
           <div>
             {tournaments.length === 0 ? (
               <p className="text-center text-xl text-white/85">
@@ -70,9 +75,6 @@ export default function Profile() {
               </p>
             ) : (
               <>
-                <h2 className="text-3xl font-bold mb-6 text-center">
-                  Mis torneos
-                </h2>
                 <ul className="flex flex-wrap justify-center gap-6">
                   {tournaments.map((torneo, index) => (
                     <li
@@ -81,6 +83,7 @@ export default function Profile() {
                     >
                       <div className="flex flex-col h-full w-full">
                         <CardsProfile
+                          id={torneo.id}
                           title={torneo.title}
                           description={torneo.description}
                           type={torneo.type}
@@ -93,21 +96,21 @@ export default function Profile() {
               </>
             )}
           </div>
-          <div className="flex justify-center mt-4">
-            <button
-              type="button"
-              className="text-white bg-gray-800 hover:bg-gray-700 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center gap-2 transition"
-              onClick={handleShowModal}
-            >
-              <PlusIcon /> <span>Crear Torneo</span>
-            </button>
-          </div>
-          {showModal && (
-            <div className="relative">
-              <CreateBoard handleClose={handleCloseModal} />
-            </div>
-          )}
         </>
+      )}
+      <div className="flex justify-center mt-4">
+        <button
+          type="button"
+          className="text-white bg-gray-800 hover:bg-gray-700 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center gap-2 transition"
+          onClick={handleShowModal}
+        >
+          <PlusIcon /> <span>Crear Torneo</span>
+        </button>
+      </div>
+      {showModal && (
+        <div className="relative">
+          <CreateBoard handleClose={handleCloseModal} />
+        </div>
       )}
     </section>
   )

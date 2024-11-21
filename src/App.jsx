@@ -26,8 +26,10 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/boards" />
-            <Route path="/profile/mis-torneos/play" element={<Liga />} />
-
+            <Route
+              path="/profile/mis-torneos/:id"
+              element={token ? <Liga /> : <Navigate to="/login" />}
+            />
             <Route
               path="/profile"
               element={token ? <Profile /> : <Navigate to="/login" />}

@@ -1,12 +1,27 @@
-import { useState } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useContext, useEffect, useState } from 'react'
+import { TournamentContext } from '../context/TournamentContext'
+import { useNavigate, useParams } from 'react-router-dom'
 
 export default function LigaPlayLiga() {
+  const navigate = useNavigate()
   const [inputValue, setInputValue] = useState('')
   const [teams, setTeams] = useState([])
   const [error, setError] = useState('')
   const [isAddingTeamComplete, setIsAddingTeamComplete] = useState(false)
   const [fixture, setFixture] = useState([])
   const [scores, setScores] = useState({})
+  const { tournament, getTournamentById } = useContext(TournamentContext)
+  const { id } = useParams()
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      navigate('/login')
+    } else {
+      getTournamentById(id)
+    }
+  }, [id])
 
   const handleChangeInput = (e) => {
     setInputValue(e.target.value)
@@ -154,6 +169,9 @@ export default function LigaPlayLiga() {
 
   return (
     <main className="">
+      <h2 className="max-w-5xl mx-auto font-bold my-8 text-3xl">
+        {tournament?.title || 'cargando...'}
+      </h2>
       {!isAddingTeamComplete && (
         <form className="max-w-5xl mx-auto mb-4">
           <input
@@ -177,6 +195,9 @@ export default function LigaPlayLiga() {
         <table className="w-full text-sm max-w-5xl mx-auto text-left rtl:text-right  text-gray-400">
           <thead className="text-xs  uppercase  bg-gray-700 text-gray-400">
             <tr>
+              <th scope="col" className="px-1 py-0.5 text-center">
+                Pos.
+              </th>
               <th scope="col" className="px-6 py-3">
                 Equipo
               </th>
@@ -213,6 +234,7 @@ export default function LigaPlayLiga() {
                   key={index}
                   className="border-b bg-gray-800 border-gray-700"
                 >
+                  <td className="px-1 py-0.5 text-center">{index + 1}</td>
                   <td className="px-6 py-4">{team.nombre}</td>
                   <td className="px-6 py-4">{team.puntos}</td>
                   <td className="px-6 py-4">{team.difGoles}</td>
