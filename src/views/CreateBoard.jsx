@@ -36,8 +36,9 @@ export default function CreateBoard({ handleClose }) {
         console.error('Error:', errorData) // Imprime el error recibido
         throw new Error('Error al crear el torneo')
       }
-      navigate('/profile/mis-torneos/play')
-      console.log(type)
+      const tournamentData = await response.json() // Aquí obtenemos los datos del torneo
+      const tournamentId = tournamentData.id
+      navigate(`/profile/mis-torneos/${tournamentId}`)
     } catch (err) {
       console.error(err)
     } finally {

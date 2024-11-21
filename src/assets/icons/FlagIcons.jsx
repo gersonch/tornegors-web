@@ -10,7 +10,7 @@ export const ShowFlagIcon = (nationality) => {
       return 'fi fi-es'
     case 'eEstados Unidos':
       return 'fi fi-us'
-    case 'Otros':
+    case 'Italia':
       return 'fi fi-unu'
     default:
       return 'fi fi-unu'

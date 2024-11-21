@@ -3,6 +3,7 @@ import { UserContext } from '../context/UserContext'
 
 import { useContext, useState } from 'react'
 import { Spinner } from '../components/Spinner'
+import { countries } from '../components/info/countries'
 
 function SignUp() {
   const { signup } = useContext(UserContext)
@@ -130,11 +131,9 @@ function SignUp() {
                 <option value="" disabled hidden>
                   Selecciona
                 </option>
-                <option>Chile</option>
-                <option>Estados Unidos</option>
-                <option>Argentina</option>
-                <option>Perú</option>
-                <option>Otro</option>
+                {countries.map((country, index) => (
+                  <option key={index}>{country}</option>
+                ))}
               </select>
               <div>
                 <label

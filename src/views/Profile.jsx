@@ -54,8 +54,8 @@ export default function Profile() {
       <h2 className="text-3xl font-bold mb-6 text-center">Mis torneos</h2>
       <div className="max-w-5xl mx-auto">
         <p className="font-semibold text-xl mx-4">
-          Hola, {userData?.firstname || 'Cargando...'}
-          <i className={`${ShowFlagIcon(userData?.nationality)} ml-4`}></i>
+          Hola, {userData?.firstname}
+          <i className={`${ShowFlagIcon(userData?.nationality)} ml-2`}></i>
         </p>
       </div>
 

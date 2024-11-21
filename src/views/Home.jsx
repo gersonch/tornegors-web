@@ -1,6 +1,7 @@
 //import { useState } from 'react'
 //import CloseIcon from '../assets/icons/CloseIcon'
-import LigaPlayLiga from './Liga'
+
+import PlayLiga from './PlayLiga'
 
 export default function Home() {
   //const [isOpen, setIsOpen] = useState(true)
@@ -34,7 +35,7 @@ export default function Home() {
           </div>
         </div>
 
-        <LigaPlayLiga />
+        <PlayLiga />
       </section>
     </>
   )

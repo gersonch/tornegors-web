@@ -10,7 +10,7 @@ import Liga from './views/Liga'
 import Profile from './views/Profile'
 import { UserContext } from './context/UserContext'
 
-//import PlayLiga from './views/PlayLiga'
+import PlayLiga from './views/PlayLiga'
 import { useContext } from 'react'
 import { TournamentProvider } from './context/TournamentContext'
 
@@ -26,6 +26,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/boards" />
+            <Route path="/mis-torneos/play" element={<PlayLiga />} />
             <Route
               path="/profile/mis-torneos/:id"
               element={token ? <Liga /> : <Navigate to="/login" />}
