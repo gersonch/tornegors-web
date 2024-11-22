@@ -73,19 +73,20 @@ export default function CreateBoard({ handleClose }) {
             <label className="block">
               <span className="block font-medium">Descripción:</span>
               <input
+                maxLength="50"
                 type="text"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                required
                 className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500 text-gray-100"
               />
+              <span className="text-xs text-white/60">max. 50 palabras</span>
             </label>
             <select
               value={type}
               onChange={(e) => setType(e.target.value)}
               className="select select-bordered w-full max-w-xs"
             >
-              <option value="" selected>
+              <option value="" disabled selected>
                 ¿Que tipo de torneo quieres crear?
               </option>
               <option value="liga">Liga</option>

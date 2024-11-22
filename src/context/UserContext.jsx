@@ -9,6 +9,7 @@ const UserProvider = ({ children }) => {
   const [userData, setUserData] = useState('')
   const URL = 'http://localhost:3000/api/user'
   const [isLoading, setIsLoading] = useState(false)
+  const [message, setMessage] = useState('')
 
   const login = async (email, password) => {
     setIsLoading(true)
@@ -68,11 +69,18 @@ const UserProvider = ({ children }) => {
   }
 
   const logout = () => {
-    setToken(null)
-
-    localStorage.removeItem('token')
-    localStorage.removeItem('userData')
-    document.cookie = 'token=; path=/; max-age=0; secure; sameSite=strict'
+    setIsLoading(true)
+    try {
+      setToken(null)
+      localStorage.removeItem('token')
+      localStorage.removeItem('userData')
+      document.cookie = 'token=; path=/; max-age=0; secure; sameSite=strict'
+      setMessage('Has cerrado sesión exitosamente')
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const getUserById = async () => {
@@ -102,7 +110,17 @@ const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ token, login, logout, signup, isLoading, userData, getUserById }}
+      value={{
+        token,
+        login,
+        logout,
+        signup,
+        isLoading,
+        userData,
+        getUserById,
+        message,
+        setMessage,
+      }}
     >
       {children}
     </UserContext.Provider>

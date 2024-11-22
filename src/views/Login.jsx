@@ -2,9 +2,10 @@ import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
 import { useState, useEffect, useContext } from 'react'
 import { Spinner } from '../components/Spinner'
+import { AlertMessage } from '../components/AlertMessage'
 
 export default function Login() {
-  const { login, token, isLoading } = useContext(UserContext)
+  const { login, token, isLoading, message } = useContext(UserContext)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loginError, setLoginError] = useState('')
@@ -26,7 +27,8 @@ export default function Login() {
   }
   return (
     <>
-      <section className="mt-20">
+      {<AlertMessage>{message}</AlertMessage>}
+      <section className="mt-10">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">

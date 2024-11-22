@@ -14,7 +14,7 @@ function CardsProfile({ title, description, type, style, id }) {
   return (
     <Link
       to={`mis-torneos/${id}`}
-      className=" bg-cyan-950 px-8 py-4 rounded-xl flex flex-col gap-4"
+      className=" bg-cyan-950 px-8 py-4 rounded-xl flex flex-col gap-4 md:min-h-44 md:44"
     >
       <h5 className=" text-xl font-bold">{title}</h5>
       <p className=" text-white/70">{description}</p>

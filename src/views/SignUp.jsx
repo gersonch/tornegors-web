@@ -132,7 +132,9 @@ function SignUp() {
                   Selecciona
                 </option>
                 {countries.map((country, index) => (
-                  <option key={index}>{country}</option>
+                  <option key={index} value={country}>
+                    {country}
+                  </option>
                 ))}
               </select>
               <div>
