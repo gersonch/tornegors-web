@@ -51,14 +51,6 @@ export default function Profile() {
 
   return (
     <section className="px-4 py-8 relative">
-      <h2 className="text-3xl font-bold mb-6 text-center">Mis torneos</h2>
-      <div className="max-w-5xl mx-auto">
-        <p className="font-semibold text-xl mx-4">
-          Hola, {userData?.firstname}
-          <i className={`${ShowFlagIcon(userData?.nationality)} ml-2`}></i>
-        </p>
-      </div>
-
       {isLoading ? (
         <SkeletonCard />
       ) : userError || tournamentError ? (
@@ -68,6 +60,13 @@ export default function Profile() {
         </div>
       ) : (
         <>
+          <h2 className="text-3xl font-bold mb-6 text-center">Mis torneos</h2>
+          <div className="max-w-5xl mx-auto">
+            <p className="font-semibold text-xl mx-4">
+              Hola, {userData?.firstname}
+              <i className={`${ShowFlagIcon(userData?.nationality)} ml-2`}></i>
+            </p>
+          </div>
           <div>
             {tournaments.length === 0 ? (
               <p className="text-center text-xl text-white/85">
