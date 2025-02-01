@@ -60,6 +60,33 @@ export const TournamentProvider = ({ children }) => {
     }
   }
 
+  const eliminateTournament = async (id) => {
+    try {
+      const response = await fetch(`${URL}/delete/${id}`, {
+        // URL correcta
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`, // Token en headers
+        },
+        credentials: 'include',
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Error al eliminar el torneo')
+      }
+
+      // Elimina el torneo del estado
+      setTournaments((prevTournaments) =>
+        prevTournaments.filter((tournament) => tournament.id !== id)
+      )
+    } catch (err) {
+      setError(`Hubo un error al eliminar el torneo: ${err.message}`)
+    }
+  }
+
   return (
     <TournamentContext.Provider
       value={{
@@ -69,6 +96,7 @@ export const TournamentProvider = ({ children }) => {
         error,
         getTournamentsByUser,
         getTournamentById,
+        eliminateTournament,
       }}
     >
       {children}

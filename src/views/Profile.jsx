@@ -22,6 +22,7 @@ export default function Profile() {
     getTournamentsByUser,
     tournaments,
     error: tournamentError,
+    eliminateTournament,
   } = useContext(TournamentContext)
 
   const getBadgeClass = (state) => {
@@ -53,11 +54,6 @@ export default function Profile() {
     <section className="px-4 py-8 relative">
       {isLoading ? (
         <SkeletonCard />
-      ) : userError || tournamentError ? (
-        <div className="text-center text-red-600">
-          <p>Hubo un error al cargar los datos.</p>
-          <p>{userError || tournamentError}</p>
-        </div>
       ) : (
         <>
           <h2 className="text-3xl font-bold mb-6 text-center">Mis torneos</h2>
@@ -87,6 +83,7 @@ export default function Profile() {
                           description={torneo.description}
                           type={torneo.type}
                           style={`${getBadgeClass(torneo.type)}`}
+                          eliminateTournament={eliminateTournament}
                         />
                       </div>
                     </li>

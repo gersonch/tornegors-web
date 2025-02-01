@@ -27,7 +27,7 @@ const UserProvider = ({ children }) => {
         document.cookie = `token=${data.token}; path=/; max-age=86400; samesite=strict`
         setToken(data.token)
         localStorage.setItem('token', data.token) // Guardar el token en localStorage
-        console.log(data)
+        console.log(data.token)
       } else {
         console.error('token no encontrado', data)
       }
