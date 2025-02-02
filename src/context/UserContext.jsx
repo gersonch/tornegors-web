@@ -1,15 +1,31 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react/prop-types */
-import { createContext, useState } from 'react'
+import { createContext, useState, useEffect } from 'react'
 
 export const UserContext = createContext()
 
 const UserProvider = ({ children }) => {
-  const [token, setToken] = useState(localStorage.getItem('token') || '')
+  const [token, setToken] = useState('')
   const [userData, setUserData] = useState('')
   const URL = 'http://localhost:3000/api/user'
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
+
+  // Función para obtener el JWT desde las cookies (no accesible por JS)
+  const getTokenFromCookies = () => {
+    const matches = document.cookie.match(/(^| )token=([^;]+)/)
+    return matches ? matches[2] : null
+  }
+
+  useEffect(() => {
+    // Intentar obtener el token al iniciar la aplicación
+    const tokenFromCookies = getTokenFromCookies()
+    if (tokenFromCookies) {
+      setToken(tokenFromCookies)
+      getUserById(tokenFromCookies) // Obtener los datos del usuario si ya hay token
+    }
+  }, [])
 
   const login = async (email, password) => {
     setIsLoading(true)
@@ -26,7 +42,8 @@ const UserProvider = ({ children }) => {
       if (data.token) {
         document.cookie = `token=${data.token}; path=/; max-age=86400; samesite=strict`
         setToken(data.token)
-        localStorage.setItem('token', data.token) // Guardar el token en localStorage
+        getUserById(data.token)
+        setMessage('Login exitoso')
         console.log(data.token)
       } else {
         console.error('token no encontrado', data)
@@ -72,9 +89,9 @@ const UserProvider = ({ children }) => {
     setIsLoading(true)
     try {
       setToken(null)
-      localStorage.removeItem('token')
-      localStorage.removeItem('userData')
-      document.cookie = 'token=; path=/; max-age=0; secure; sameSite=strict'
+      setUserData(null)
+      document.cookie = 'token=; path=/; max-age=0; samesite=strict' // Borrar la cookie
+
       setMessage('Has cerrado sesión exitosamente')
     } catch (err) {
       console.error(err)
